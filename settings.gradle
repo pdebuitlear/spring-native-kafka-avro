@@ -1,0 +1,11 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven { url pluginRepoUrl }
+        maven { url springReleases}
+        maven { url springSnapshots}
+    }
+}
+
+rootProject.name = 'spring-native-kafka-avro'
+

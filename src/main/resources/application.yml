@@ -1,0 +1,42 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: "spring-native-kafka-streams"
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    streams:
+      bootstrap-servers: localhost:9092
+      application-id: ${spring.application.name}
+      client-id: ${spring.application.name}-stream
+      auto-offset-reset: earliest
+      properties:
+        default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+        default.deserialization.exception.handler: org.apache.kafka.streams.errors.LogAndFailExceptionHandler
+    properties:
+      schema.registry.url: http://localhost:8081
+      bootstrap.servers: ${spring.kafka.bootstrap-servers}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+  level:
+    org.springframework.kafka.config: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+topic:
+  name: Address
+  partitions-num: 1
+  replication-factor: 1
